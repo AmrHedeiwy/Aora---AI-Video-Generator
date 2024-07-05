@@ -9,8 +9,15 @@ import { router } from 'expo-router';
 const App = () => {
   return (
     <SafeAreaView className="bg-primary h-full">
-      <ScrollView contentContainerStyle={{ height: '100%' }}>
-        <View className="w-full justify-center items-center h-full px-4">
+      <ScrollView
+        contentContainerStyle={{
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+      >
+        <View className="w-full justify-center items-center px-4">
           <Image
             source={images.logo}
             className="w-[130px] h-[84px]"
@@ -43,7 +50,7 @@ const App = () => {
           <Button
             title="Continue with Email"
             onPress={() => router.push('/sign-in')}
-            containerStyles="w-full mt-7"
+            containerClassName="w-full mt-7"
           />
         </View>
       </ScrollView>

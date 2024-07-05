@@ -1,31 +1,36 @@
 import { Text, TouchableOpacity } from 'react-native';
 import React from 'react';
+import clsx from 'clsx';
 
 interface ButtonProps {
   title: string;
   onPress: () => void;
-  containerStyles?: string;
-  textStyles?: string;
+  containerClassName?: string;
+  textClassName?: string;
   isLoading?: boolean;
 }
 
 const Button = ({
   title,
   onPress,
-  containerStyles,
-  textStyles,
+  containerClassName,
+  textClassName,
   isLoading
 }: ButtonProps) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.7}
-      className={`bg-secondary rounded-xl min-h-[62px] justify-center items-center ${containerStyles} ${
-        isLoading ? ' opacity-50' : ''
-      }`}
+      className={clsx(
+        'bg-secondary rounded-xl min-h-[62px] justify-center items-center',
+        isLoading && 'opacity-50',
+        containerClassName
+      )}
       disabled={isLoading}
     >
-      <Text className={`text-primary font-psemibold text-lg ${textStyles}`}>{title}</Text>
+      <Text className={clsx('text-primary font-psemibold text-lg', textClassName)}>
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 };
