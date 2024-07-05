@@ -30,7 +30,10 @@ const schema = z.object({
     .string()
     .trim()
     .min(1, { message: 'Password is required.' })
-    .regex(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+    .regex(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, {
+      message:
+        'Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character from the set @$!%?&.'
+    })
 });
 
 type SignUp = z.infer<typeof schema>;

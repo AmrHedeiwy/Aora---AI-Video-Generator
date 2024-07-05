@@ -22,49 +22,48 @@ const FormField = <T extends FieldValues>({
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   return (
-    <View className={clsx('space-y-2', containerClassName)}>
-      <Controller
-        control={control}
-        name={name}
-        rules={rules}
-        render={({
-          field: { onChange, onBlur, value },
-          fieldState: { error, isTouched, isDirty }
-        }) => (
-          <View className={clsx('space-y-2')}>
-            <Text className="text-base text-gray-100 font-pmedium">
-              {name.charAt(0).toUpperCase() + name.slice(1)}
-            </Text>
-            <View className="border-2 border-black-200 w-full h-16 px-4 bg-black-100 rounded-2xl focus:border-secondary-100 items-center flex-row">
-              <TextInput
-                className="flex-1 text-white font-psemibold text-base"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                placeholder={placeholder}
-                placeholderTextColor="#7b7b8b"
-                secureTextEntry={name === 'password' && !showPassword}
-                {...(name === 'email' ? { keyboardType: 'email-address' } : {})}
-              />
+    <Controller
+      control={control}
+      name={name}
+      rules={rules}
+      render={({
+        field,
+        fieldState: { error, isTouched, isDirty },
+        formState: { isSubmitted }
+      }) => (
+        <View className={clsx('space-y-2', containerClassName)}>
+          <Text className="text-base text-gray-100 font-pmedium">
+            {name.charAt(0).toUpperCase() + name.slice(1)}
+          </Text>
+          <View className="border-2 border-black-200 w-full h-16 px-4 bg-black-100 rounded-2xl focus:border-secondary-100 items-center flex-row">
+            <TextInput
+              {...field}
+              className="flex-1 text-white font-psemibold text-base"
+              placeholder={placeholder}
+              placeholderTextColor="#7b7b8b"
+              secureTextEntry={name === 'password' && !showPassword}
+              {...(name === 'email'
+                ? { keyboardType: 'email-address', autoCapitalize: 'none' }
+                : {})}
+            />
 
-              {name === 'password' && (
-                <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                  <Image
-                    source={!showPassword ? icons.eye : icons.eyeHide}
-                    className="w-6 h-6"
-                    resizeMode="contain"
-                  />
-                </TouchableOpacity>
-              )}
-            </View>
-
-            {error && isTouched && isDirty && (
-              <Text style={{ color: 'red' }}>{error.message}</Text>
+            {name === 'password' && (
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                <Image
+                  source={!showPassword ? icons.eye : icons.eyeHide}
+                  className="w-6 h-6"
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
             )}
           </View>
-        )}
-      />
-    </View>
+
+          {((error && isTouched && isDirty) || (isSubmitted && error)) && (
+            <Text className="text-red-500">{error.message}</Text>
+          )}
+        </View>
+      )}
+    />
   );
 };
 
