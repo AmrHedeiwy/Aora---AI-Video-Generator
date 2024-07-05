@@ -14,22 +14,20 @@ import FormField from '@/components/FormField';
 
 const schema = z.object({
   username: z
-    .string()
+    .string({ required_error: 'Username is required.' })
     .trim()
-    .min(1, { message: 'Username is required.' })
+
     .regex(/^[A-Za-z\d_-]{3,20}$/, {
       message:
         'Username can only contain letters, digits, underscores, and hyphens, and must be between 3 and 20 characters long.'
     }),
   email: z
-    .string()
+    .string({ required_error: 'Email is required.' })
     .trim()
-    .min(1, { message: 'Email is required.' })
     .email('Please enter a valid email address in the format example@example.com.'),
   password: z
-    .string()
+    .string({ required_error: 'Password is required.' })
     .trim()
-    .min(1, { message: 'Password is required.' })
     .regex(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, {
       message:
         'Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character from the set @$!%?&.'

@@ -7,7 +7,6 @@ import { icons } from '@/constants';
 interface FormFieldProps<T extends FieldValues> {
   control: Control<T>;
   name: Path<T>;
-  rules?: object;
   placeholder?: string;
   containerClassName?: string;
 }
@@ -15,7 +14,6 @@ interface FormFieldProps<T extends FieldValues> {
 const FormField = <T extends FieldValues>({
   control,
   name,
-  rules,
   placeholder,
   containerClassName
 }: FormFieldProps<T>) => {
@@ -25,9 +23,8 @@ const FormField = <T extends FieldValues>({
     <Controller
       control={control}
       name={name}
-      rules={rules}
       render={({
-        field,
+        field: { onBlur, onChange, value },
         fieldState: { error, isTouched, isDirty },
         formState: { isSubmitted }
       }) => (
@@ -37,7 +34,9 @@ const FormField = <T extends FieldValues>({
           </Text>
           <View className="border-2 border-black-200 w-full h-16 px-4 bg-black-100 rounded-2xl focus:border-secondary-100 items-center flex-row">
             <TextInput
-              {...field}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
               className="flex-1 text-white font-psemibold text-base"
               placeholder={placeholder}
               placeholderTextColor="#7b7b8b"
@@ -58,9 +57,7 @@ const FormField = <T extends FieldValues>({
             )}
           </View>
 
-          {((error && isTouched && isDirty) || (isSubmitted && error)) && (
-            <Text className="text-red-500">{error.message}</Text>
-          )}
+          {error && <Text className="text-red-500">{error.message}</Text>}
         </View>
       )}
     />
